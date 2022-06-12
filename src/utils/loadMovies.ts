@@ -1,4 +1,3 @@
-import { title } from "process";
 import Movie from "../Interfaces/Movie";
 
 interface MoviesFromApiDTO {

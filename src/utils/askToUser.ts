@@ -1,9 +1,9 @@
 const askToUser = (type: string, message: string) => {
   return [
     {
-      type: "type",
+      type: type,
       name: "option",
-      message: "message",
+      message: message,
     },
   ];
 };
