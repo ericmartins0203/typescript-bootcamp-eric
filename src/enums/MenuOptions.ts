@@ -1,4 +1,4 @@
-enum possibleAnswers {
+enum MenuOptions {
   LOGIN = "1",
   LIST_MOVIES = "2",
   RATE_MOVIE = "3",
@@ -7,4 +7,4 @@ enum possibleAnswers {
   EXIT = "0",
 }
 
-export default possibleAnswers;
+export default MenuOptions;

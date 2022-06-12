@@ -2,9 +2,10 @@ import inquirer from "inquirer";
 
 import MoviesDB from "./database/Movies";
 import UserDb from "./database/User";
-import possibleAnswers from "./enums/possibleAnswers";
+import MenuOptions from "./enums/MenuOptions";
 import Movie from "./Interfaces/Movie";
 import User from "./Interfaces/User";
+import askToUser from "./utils/askToUser";
 import calculateMoviesAverage from "./utils/calculateMoviesAverage";
 import fulfillMovieDB from "./utils/fulfillMovieDB";
 import orderByAverage from "./utils/orderByAverage";
@@ -28,38 +29,22 @@ UserDb.push(eric);
   )
 */
 
-const questions = [
-  {
-    type: "input",
-    name: "option",
-    message:
-      "Digite uma opção:  \n 1- Logar usuário \n 2- Listar filmes \n 3- Dar avaliação \n 4- Listar filmes com média de avaliação \n 5- Adicionar filme a minha lista \n 0- Sair \n",
-  },
-];
+const questions = askToUser(
+  "input",
+  "Digite uma opção:  \n 1- Logar usuário \n 2- Listar filmes \n 3- Dar avaliação \n 4- Listar filmes com média de avaliação \n 5- Adicionar filme a minha lista \n 0- Sair \n"
+);
 
-const chooseUserIdQuestions = [
-  {
-    type: "number",
-    name: "option",
-    message: "Insira o id do usuário que deseja logar:",
-  },
-];
+const chooseUserIdQuestions = askToUser("type", "Digite o id do usuário");
 
-const chooseMovieQuestions = [
-  {
-    type: "number",
-    name: "option",
-    message: "Insira o id do filme desejado:",
-  },
-];
+const chooseMovieQuestions = askToUser(
+  "number",
+  "Insira o id do filme desejado:"
+);
 
-const rateMovieQuestions = [
-  {
-    type: "number",
-    name: "option",
-    message: "Digite sua avaliação(de 0 a 5):",
-  },
-];
+const rateMovieQuestions = askToUser(
+  "number",
+  "Digite sua avaliação(de 0 a 5)"
+);
 
 async function run() {
   if (MoviesDB.length < 1) {
@@ -76,7 +61,7 @@ async function run() {
   let rateMovieAnswers: any;
 
   switch (answers.option) {
-    case possibleAnswers.LOGIN:
+    case MenuOptions.LOGIN:
       UserDb.map((user) => console.log(`${user.id} - ${user.name}`));
       const userId = await inquirer.prompt(chooseUserIdQuestions);
       user = UserDb.find((user) => user.id == userId.option);
@@ -90,13 +75,13 @@ async function run() {
       run();
       break;
 
-    case possibleAnswers.LIST_MOVIES:
+    case MenuOptions.LIST_MOVIES:
       MoviesDB.map((movie) => console.log(`${movie.id} - ${movie.name}`));
 
       run();
       break;
 
-    case possibleAnswers.RATE_MOVIE:
+    case MenuOptions.RATE_MOVIE:
       chooseMovieAnswers = await inquirer.prompt(chooseMovieQuestions);
       rateMovieAnswers = await inquirer.prompt(rateMovieQuestions);
 
@@ -115,7 +100,7 @@ async function run() {
       run();
       break;
 
-    case possibleAnswers.LIST_MOVIES_WITH_AVERAGE:
+    case MenuOptions.LIST_MOVIES_WITH_AVERAGE:
       console.log("Listando filmes com média de avaliação");
       const moviesWithAverage = calculateMoviesAverage(MoviesDB);
       const ordered = orderByAverage(moviesWithAverage);
@@ -127,7 +112,7 @@ async function run() {
       run();
       break;
 
-    case possibleAnswers.ADD_MOVIE_TO_MY_LIST:
+    case MenuOptions.ADD_MOVIE_TO_MY_LIST:
       chooseMovieAnswers = await inquirer.prompt(chooseMovieQuestions);
 
       movieId = chooseMovieAnswers.option;
@@ -150,7 +135,7 @@ async function run() {
       run();
       break;
 
-    case possibleAnswers.EXIT:
+    case MenuOptions.EXIT:
       console.log("Saindo do programa");
       break;
 
